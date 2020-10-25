@@ -1,0 +1,4 @@
+lbarret@MatebookLB:~/catkin_ws/src/beginner_tutorials$ cpplint $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )
+Done processing ./src/listener.cpp
+Done processing ./src/talker.cpp
+
