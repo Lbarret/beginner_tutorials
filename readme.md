@@ -7,6 +7,11 @@ This is a simple publisher/subscriber project
  -Ubuntu 18.04
 
  -ROS Melodic
+
+ -This project assumes the user has a created a catkin workspace by following the 
+following tutorial: 
+
+http://wiki.ros.org/catkin/Tutorials/create_a_workspace
  
 ## Build
 
