@@ -1,13 +1,19 @@
+/**
+ * @file talker.cpp
+ * @version 1.0
+ * @brief Ros publisher node that publishes to the chatter topic
+ * @Created on: Sep 28, 2020
+ * @copyright 2020 
+ * @Author Loic Barret
+ */
+#include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-
-#include <sstream>
 
 /**
  * This tutorial demonstrates simple sending of messages over the ROS system.
  */
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   /**
    * The ros::init() function needs to see argc and argv so that it can perform
    * any ROS arguments and name remapping that were provided at the command line.
@@ -53,15 +59,14 @@ int main(int argc, char **argv)
    * a unique string for each message.
    */
   int count = 0;
-  while (ros::ok())
-  {
+  while (ros::ok()) {
     /**
      * This is a message object. You stuff it with data, and then publish it.
      */
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << "hello world " << count;
+    ss << "robots > humans " << count;
     msg.data = ss.str();
 
     ROS_INFO("%s", msg.data.c_str());
