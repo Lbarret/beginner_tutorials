@@ -17,7 +17,7 @@ http://wiki.ros.org/catkin/Tutorials/create_a_workspace
 
 To build this project, download this project into your catkin_ws/src file and run the following:
 
-cd ~catkin_ws
+cd ~/catkin_ws
 
 catkin_make
 
