@@ -4,6 +4,11 @@ pkg="beginner_tutorials"
 type="talker"
 name="talker"
 />
+
+<param name="message" 
+value="$(arg my_message)" 
+/>
+
 <node
 pkg="beginner_tutorials" 
 type="listener"

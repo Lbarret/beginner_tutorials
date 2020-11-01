@@ -31,8 +31,10 @@ int main(int argc, char **argv) {
    * The first NodeHandle constructed will fully initialize this node, and the last
    * NodeHandle destructed will close down the node.
    */
-  ros::NodeHandle n;
+  ros::NodeHandle nh;
 
+  std::string message;
+  nh.getParam("message", message);
   /**
    * The advertise() function is how you tell ROS that you want to
    * publish on a given topic name. This invokes a call to the ROS
@@ -50,7 +52,7 @@ int main(int argc, char **argv) {
    * than we can send them, the number here specifies how many messages to
    * buffer up before throwing some away.
    */
-  ros::Publisher chatter_pub = n.advertise<std_msgs::String>("chatter", 1000);
+  ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
 
   ros::Rate loop_rate(10);
 
@@ -66,7 +68,7 @@ int main(int argc, char **argv) {
     std_msgs::String msg;
 
     std::stringstream ss;
-    ss << "robots > humans " << count;
+    ss << message << " "<< count;
     msg.data = ss.str();
 
     ROS_INFO("%s", msg.data.c_str());
