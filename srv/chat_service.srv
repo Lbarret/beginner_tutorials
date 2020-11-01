@@ -1,5 +1,3 @@
 string request_message
-
 ---
-
-string return_message
+string response_message

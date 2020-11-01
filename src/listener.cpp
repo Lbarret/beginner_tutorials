@@ -8,13 +8,13 @@
  */
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "beginner_tutorials/chat_service.h"
+#include <iostream>
 
 /**
  * This tutorial demonstrates simple receipt of messages over the ROS system.
  */
-void chatterCallback(const std_msgs::String::ConstPtr& msg) {
-  ROS_INFO("I heard: [%s]", msg->data.c_str());
-}
+
 
 int main(int argc, char **argv) {
   /**
@@ -51,14 +51,30 @@ int main(int argc, char **argv) {
    * is the number of messages that will be buffered up before beginning to throw
    * away the oldest ones.
    */
-  ros::Subscriber sub = nh.subscribe("chatter", 1000, chatterCallback);
+  std::string message;
+  nh.getParam("message", message);
+  
+  std::string answer;
+  std::cout << "Question: Are robots awesome? (y/n): ";
+  std::cin >> answer;
+  ros::ServiceClient client = nh.serviceClient<beginner_tutorials::chat_service>("chatter");
 
+  beginner_tutorials::chat_service srv;
+
+  srv.request.request_message = answer;
+  
+  if (client.call(srv)) {
+    ROS_INFO_STREAM(srv.response.response_message);
+  } else {
+    ROS_ERROR("Failed to call service chat_service");
+    return 1;
+  }
+  std::cout << "answer: " << srv.response.response_message;
   /**
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
    * callbacks will be called from within this thread (the main one).  ros::spin()
    * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
    */
-  ros::spin();
 
   return 0;
 }
