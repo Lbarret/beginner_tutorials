@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
    */
   ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
 
-  ros::Rate loop_rate(10);
+  ros::Rate loop_rate(3);
 
   /**
    * A count of how many messages we have sent. This is used to create
