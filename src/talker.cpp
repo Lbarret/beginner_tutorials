@@ -16,13 +16,15 @@
  */
 
 bool chat(beginner_tutorials::chat_service::Request &req, beginner_tutorials::chat_service::Response &res) {
-	ROS_INFO_STREAM("request: " << req.request_message);
+	ROS_DEBUG_STREAM("request: " << req.request_message);
 	if(req.request_message == "y") {
 		res.response_message = "Duh";
-	} else {
+	} else if(req.request_message == "n") {
 		res.response_message = "WRONG";
+	} else {
+		res.response_message = "warning";
 	}
-	ROS_INFO_STREAM("sending back response: " << res.response_message);
+	ROS_DEBUG_STREAM("sending back response: " << res.response_message);
 	return true;
 }
 
@@ -49,6 +51,7 @@ int main(int argc, char **argv) {
 
   ros::ServiceServer service = nh.advertiseService("chatter", chat);
   ROS_INFO("Waiting for response");
+
   ros::spin();
 
 

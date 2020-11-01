@@ -2,7 +2,7 @@
  * @file listener.cpp
  * @version 1.0
  * @brief Ros subscriber node that subscribes to the chatter topic
- * @Created on: Sep 28, 2020
+ * @Created on: Oct , 2020
  * @copyright 2020 
  * @Author Loic Barret
  */
@@ -54,22 +54,31 @@ int main(int argc, char **argv) {
   std::string message;
   nh.getParam("message", message);
   
-  std::string answer;
-  std::cout << "Question: Are robots awesome? (y/n): ";
-  std::cin >> answer;
-  ros::ServiceClient client = nh.serviceClient<beginner_tutorials::chat_service>("chatter");
+  std::cout <<"\n" << message << "?\n\n...Really? That's all you have to say? \n\nWhatever. \n\n";
 
-  beginner_tutorials::chat_service srv;
+  while (ros::ok()){
+    
+    ros::ServiceClient client = nh.serviceClient<beginner_tutorials::chat_service>("chatter");
 
-  srv.request.request_message = answer;
-  
-  if (client.call(srv)) {
-    ROS_INFO_STREAM(srv.response.response_message);
-  } else {
-    ROS_ERROR("Failed to call service chat_service");
-    return 1;
+    beginner_tutorials::chat_service srv;
+    std::cout << "Do you think robots awesome? (y/n): ";
+    std::cin >> srv.request.request_message;
+
+      if (client.call(srv)) {
+      if (srv.response.response_message == "warning") {
+        ROS_WARN_STREAM("Did not recieve a y or n response");
+      } else {
+        ROS_INFO_STREAM(srv.response.response_message);
+      }
+    } else {
+      ROS_ERROR_STREAM("Failed to call service chat_service");
+      return 1;
+    }
+    if(srv.request.request_message == "n") {
+      ROS_FATAL_STREAM("User was too dumb to realize the superiority of robots");
+      ros::shutdown();
+    }
   }
-  std::cout << "answer: " << srv.response.response_message;
   /**
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
    * callbacks will be called from within this thread (the main one).  ros::spin()
