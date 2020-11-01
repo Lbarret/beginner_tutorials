@@ -1,0 +1,13 @@
+<launch>
+<node
+pkg="beginner_tutorials"
+type="talker"
+name="talker"
+/>
+<node
+pkg="beginner_tutorials" 
+type="listener"
+name="listener"
+output="screen"
+/>
+</launch>
