@@ -21,17 +21,18 @@
 * @param &res the response variable from chat_service
 * @return bool
 */
-bool chat(beginner_tutorials::chat_service::Request &req, beginner_tutorials::chat_service::Response &res) {
-	ROS_DEBUG_STREAM("request: " << req.request_message);
-	if(req.request_message == "y") {
-		res.response_message = "Duh";
-	} else if(req.request_message == "n") {
-		res.response_message = "WRONG";
-	} else {
-		res.response_message = "warning";
-	}
-	ROS_DEBUG_STREAM("sending back response: " << res.response_message);
-	return true;
+bool chat(beginner_tutorials::chat_service::Request &req,
+  beginner_tutorials::chat_service::Response &res) {
+  ROS_DEBUG_STREAM("request: " << req.request_message);
+  if (req.request_message == "y") {
+    res.response_message = "Duh";
+  } else if (req.request_message == "n") {
+    res.response_message = "WRONG";
+  } else {
+    res.response_message = "warning";
+  }
+  ROS_DEBUG_STREAM("sending back response: " << res.response_message);
+  return true;
 }
 
 int main(int argc, char **argv) {

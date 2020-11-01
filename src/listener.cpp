@@ -6,10 +6,10 @@
  * @copyright 2020 
  * @Author Loic Barret
  */
+#include <iostream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/chat_service.h"
-#include <iostream>
 
 /**
  * This program demonstrates the functionality of services over the ROS system.
@@ -43,17 +43,14 @@ int main(int argc, char **argv) {
    * getParam gets the parameter fed in by the user while launching the .launch file
    */
   nh.getParam("message", message);
-  
-  std::cout <<"\n" << message << "?\n\n...Really? That's all you have to say? \n\nWhatever. \n\n";
-
-  
-  while (ros::ok()){
-    
+  std::cout << "\n" << message;
+  std::cout << "?\n\n...Really? That's all you have to say? \n\nWhatever. \n\n";
+  while (ros::ok()) {
     /** 
      * ServiceClient creates a client of the service chat_service
      */
-    ros::ServiceClient client = nh.serviceClient<beginner_tutorials::chat_service>("chatter");
-    
+    ros::ServiceClient client =
+    nh.serviceClient<beginner_tutorials::chat_service>("chatter");
     /**
      * srv is a service object that contains the attributes in chat_service.srv. The user 
      * populates the request message with their answer to the question
@@ -81,10 +78,11 @@ int main(int argc, char **argv) {
     }
 
     /**
-     * If the user responds n to the question, the program gives off a fatal error and shuts ros down.
+     * If the user responds n to the question, the program gives off a fatal error 
+     * and shuts ros down.
      */
-    if(srv.request.request_message == "n") {
-      ROS_FATAL_STREAM("User was too dumb to realize the superiority of robots");
+    if (srv.request.request_message == "n") {
+      ROS_FATAL_STREAM("User unable to realize the superiority of robots");
       ros::shutdown();
     }
   }
