@@ -1,8 +1,8 @@
 /**
  * @file talker.cpp
- * @version 1.0
- * @brief Ros publisher node that publishes to the chatter topic
- * @Created on: Sep 28, 2020
+ * @version 2.0
+ * @brief Ros server node that responds to the sevice chat_service 
+ * @Created on: Oct 31, 2020
  * @copyright 2020 
  * @Author Loic Barret
  */
@@ -12,9 +12,15 @@
 #include "beginner_tutorials/chat_service.h"
 
 /**
- * This tutorial demonstrates simple sending of messages over the ROS system.
+ * This program demonstrates the functionality of services over the ROS system.
  */
 
+/**
+* @brief Reads in the request variable and writes to the response variable accordingly
+* @param &req the request variable from chat_service
+* @param &res the response variable from chat_service
+* @return bool
+*/
 bool chat(beginner_tutorials::chat_service::Request &req, beginner_tutorials::chat_service::Response &res) {
 	ROS_DEBUG_STREAM("request: " << req.request_message);
 	if(req.request_message == "y") {
@@ -48,10 +54,22 @@ int main(int argc, char **argv) {
    */
   ros::NodeHandle nh;
 
-
+  /**
+   * ServiceServer creates a server of the service chat_service
+   */
   ros::ServiceServer service = nh.advertiseService("chatter", chat);
+
+  /**
+   * While the service hasn't been called, inform the user that the node is waiting
+   * for a response.
+   */
   ROS_INFO("Waiting for response");
 
+  /**
+   * ros::spin() will enter a loop, pumping callbacks.  With this version, all
+   * callbacks will be called from within this thread (the main one).  ros::spin()
+   * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
+   */
   ros::spin();
 
 

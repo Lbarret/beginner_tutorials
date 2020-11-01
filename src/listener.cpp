@@ -1,8 +1,8 @@
 /**
  * @file listener.cpp
- * @version 1.0
- * @brief Ros subscriber node that subscribes to the chatter topic
- * @Created on: Oct , 2020
+ * @version 2.0
+ * @brief Ros client node that requests the service chat_service 
+ * @Created on: Oct 31, 2020
  * @copyright 2020 
  * @Author Loic Barret
  */
@@ -12,7 +12,7 @@
 #include <iostream>
 
 /**
- * This tutorial demonstrates simple receipt of messages over the ROS system.
+ * This program demonstrates the functionality of services over the ROS system.
  */
 
 
@@ -36,37 +36,42 @@ int main(int argc, char **argv) {
    */
   ros::NodeHandle nh;
 
-  /**
-   * The subscribe() call is how you tell ROS that you want to receive messages
-   * on a given topic.  This invokes a call to the ROS
-   * master node, which keeps a registry of who is publishing and who
-   * is subscribing.  Messages are passed to a callback function, here
-   * called chatterCallback.  subscribe() returns a Subscriber object that you
-   * must hold on to until you want to unsubscribe.  When all copies of the Subscriber
-   * object go out of scope, this callback will automatically be unsubscribed from
-   * this topic.
-   *
-   * The second parameter to the subscribe() function is the size of the message
-   * queue.  If messages are arriving faster than they are being processed, this
-   * is the number of messages that will be buffered up before beginning to throw
-   * away the oldest ones.
-   */
+
   std::string message;
+
+  /**
+   * getParam gets the parameter fed in by the user while launching the .launch file
+   */
   nh.getParam("message", message);
   
   std::cout <<"\n" << message << "?\n\n...Really? That's all you have to say? \n\nWhatever. \n\n";
 
+  
   while (ros::ok()){
     
+    /** 
+     * ServiceClient creates a client of the service chat_service
+     */
     ros::ServiceClient client = nh.serviceClient<beginner_tutorials::chat_service>("chatter");
-
+    
+    /**
+     * srv is a service object that contains the attributes in chat_service.srv. The user 
+     * populates the request message with their answer to the question
+     */
     beginner_tutorials::chat_service srv;
     std::cout << "Do you think robots awesome? (y/n): ";
     std::cin >> srv.request.request_message;
 
-      if (client.call(srv)) {
+    /**
+     * Checks to see if the client can be called. If it can, feed the srv object to the service.
+     * If the client can't be called, return an error telling the user it couldn't call the service.
+     * Then the program checks the response. If it recieved any request other than a y or n, it outputs
+     * a warning telling the user it did not recieve a valid request. If it recieved a valid request, 
+     * it outputs the corresponding response.
+     */
+    if (client.call(srv)) {
       if (srv.response.response_message == "warning") {
-        ROS_WARN_STREAM("Did not recieve a y or n response");
+        ROS_WARN_STREAM("Did not recieve a y or n request");
       } else {
         ROS_INFO_STREAM(srv.response.response_message);
       }
@@ -74,16 +79,15 @@ int main(int argc, char **argv) {
       ROS_ERROR_STREAM("Failed to call service chat_service");
       return 1;
     }
+
+    /**
+     * If the user responds n to the question, the program gives off a fatal error and shuts ros down.
+     */
     if(srv.request.request_message == "n") {
       ROS_FATAL_STREAM("User was too dumb to realize the superiority of robots");
       ros::shutdown();
     }
   }
-  /**
-   * ros::spin() will enter a loop, pumping callbacks.  With this version, all
-   * callbacks will be called from within this thread (the main one).  ros::spin()
-   * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
-   */
 
   return 0;
 }
