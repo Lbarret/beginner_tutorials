@@ -25,13 +25,13 @@ catkin_make
 
 To run this project, run the launch file with a starting message:
 
-roslaunch beginner_tutorials conversation.launch my_message:="<ebter your start message here>"
+roslaunch beginner_tutorials conversation.launch my_message:="enter your start message here"
 
 Answer the question by inputing a y or n into the terminal.
 
 
 To call the service chatter in the command line, run the launch file using the above command. Before answering, open a new terminal and run the following:
 
-rosservice call /chatter "request_message: '<enter your response here>'" 
+rosservice call /chatter "request_message: 'enter your response here'" 
 
 
