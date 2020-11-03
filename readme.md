@@ -23,14 +23,15 @@ catkin_make
 
 ## Running
 
-To run this project, start the roscore by running the following command:
+To run this project, run the launch file with a starting message:
 
-roscore
+roslaunch beginner_tutorials conversation.launch my_message:="<ebter your start message here>"
 
-To start the talker node, open a new window and run the following:
+Answer the question by inputing a y or n into the terminal.
 
-rosrun beginner_tutorials/talker
 
-To start the listener node, open a new window and run the following:
+To call the service chatter in the command line, run the launch file using the above command. Before answering, open a new terminal and run the following:
 
-rosrun beginner_tutorials/listener
+rosservice call /chatter "request_message: '<enter your response here>'" 
+
+
