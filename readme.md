@@ -1,6 +1,6 @@
 # Overview:
 
-This is a simple publisher/subscriber project 
+This is a simple ros service example project 
 
 ## Assumptions/dependencies
 
