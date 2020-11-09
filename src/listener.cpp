@@ -15,6 +15,9 @@
  * This program demonstrates the functionality of services over the ROS system.
  */
 
+void chatterCallback(const std_msgs::String::ConstPtr& msg) {
+  ROS_INFO("I heard: [%s]", msg->data.c_str());
+}
 
 int main(int argc, char **argv) {
   /**
@@ -38,7 +41,7 @@ int main(int argc, char **argv) {
 
 
   std::string message;
-
+  
   /**
    * getParam gets the parameter fed in by the user while launching the .launch file
    */
@@ -46,11 +49,14 @@ int main(int argc, char **argv) {
   std::cout << "\n" << message;
   std::cout << "?\n\n...Really? That's all you have to say? \n\nWhatever. \n\n";
   while (ros::ok()) {
+
+    ros::Subscriber sub = nh.subscribe("chatter", 1000, chatterCallback);
     /** 
-     * ServiceClient creates a client of the service chat_service
-     */
+   * ServiceClient creates a client of the service chat_service
+   */
     ros::ServiceClient client =
-    nh.serviceClient<beginner_tutorials::chat_service>("chatter");
+    nh.serviceClient<beginner_tutorials::chat_service>("conv");
+    
     /**
      * srv is a service object that contains the attributes in chat_service.srv. The user 
      * populates the request message with their answer to the question
@@ -79,13 +85,14 @@ int main(int argc, char **argv) {
 
     /**
      * If the user responds n to the question, the program gives off a fatal error 
-     * and shuts ros down.
      */
     if (srv.request.request_message == "n") {
       ROS_FATAL_STREAM("User unable to realize the superiority of robots");
-      ros::shutdown();
     }
+    ros::spinOnce();
   }
+
+
 
   return 0;
 }

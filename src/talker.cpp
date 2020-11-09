@@ -1,15 +1,17 @@
 /**
  * @file talker.cpp
- * @version 2.0
- * @brief Ros server node that responds to the sevice chat_service 
- * @Created on: Oct 31, 2020
+ * @version 3.0
+ * @brief Ros broadcaster node that broadcasts a tf fram 
+ * @Created on: Nov 8, 2020
  * @copyright 2020 
  * @Author Loic Barret
  */
+
 #include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/chat_service.h"
+#include <tf/transform_broadcaster.h>
 
 /**
  * This program demonstrates the functionality of services over the ROS system.
@@ -23,7 +25,7 @@
 */
 bool chat(beginner_tutorials::chat_service::Request &req,
   beginner_tutorials::chat_service::Response &res) {
-  ROS_DEBUG_STREAM("request: " << req.request_message);
+  ROS_INFO_STREAM("request: " << req.request_message);
   if (req.request_message == "y") {
     res.response_message = "Duh";
   } else if (req.request_message == "n") {
@@ -31,7 +33,7 @@ bool chat(beginner_tutorials::chat_service::Request &req,
   } else {
     res.response_message = "warning";
   }
-  ROS_DEBUG_STREAM("sending back response: " << res.response_message);
+  ROS_INFO_STREAM("sending back response: " << res.response_message);
   return true;
 }
 
@@ -55,24 +57,53 @@ int main(int argc, char **argv) {
    */
   ros::NodeHandle nh;
 
-  /**
-   * ServiceServer creates a server of the service chat_service
-   */
-  ros::ServiceServer service = nh.advertiseService("chatter", chat);
+  tf::TransformBroadcaster br;
+  tf::Transform transform;
 
-  /**
-   * While the service hasn't been called, inform the user that the node is waiting
-   * for a response.
-   */
-  ROS_INFO("Waiting for response");
+  ros::Publisher chatter_pub = nh.advertise<std_msgs::String>("chatter", 1000);
+  ros::Rate loop_rate(10);
+  int count = 0;
+  while (ros::ok()){
+    /**
+     * ServiceServer creates a server of the service chat_service
+     */
+    ros::ServiceServer service = nh.advertiseService("conv", chat);
 
-  /**
-   * ros::spin() will enter a loop, pumping callbacks.  With this version, all
-   * callbacks will be called from within this thread (the main one).  ros::spin()
-   * will exit when Ctrl-C is pressed, or the node is shutdown by the master.
-   */
-  ros::spin();
+    std_msgs::String msg;
 
+    std::stringstream ss;
+    ss << "robots > humans " << count;
+    msg.data = ss.str();
+
+    //ROS_INFO_STREAM(msg.data.c_str());
+
+    /**
+     * The publish() function is how you send messages. The parameter
+     * is the message object. The type of this object must agree with the type
+     * given as a template parameter to the advertise<>() call, as was done
+     * in the constructor above.
+     */
+    chatter_pub.publish(msg);
+
+
+
+    loop_rate.sleep();
+    ++count;
+
+    transform.setOrigin( tf::Vector3(0.0, 2.0, 0.0) );
+    transform.setRotation( tf::Quaternion(0, 0, 0, 1) );
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
+  
+    
+
+    /**
+     * While the service hasn't been called, inform the user that the node is waiting
+     * for a response.
+     */
+    ROS_INFO_STREAM("Waiting for response");
+
+    ros::spinOnce();
+  }
 
   return 0;
 }
