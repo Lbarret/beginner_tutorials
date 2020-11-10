@@ -1,6 +1,8 @@
-lbarret@MatebookLB:~/catkin_ws/src/beginner_tutorials$ cppcheck src/
+lbarret@MatebookLB:~/catkin_ws/src/beginner_tutorials$ cppcheck src/ test/
 Checking src/listener.cpp ...
-1/2 files checked 50% done
+1/3 files checked 33% done
 Checking src/talker.cpp ...
-2/2 files checked 100% done
+2/3 files checked 66% done
+Checking test/utest.cpp ...
+3/3 files checked 100% done
 
