@@ -15,4 +15,6 @@ type="listener"
 name="listener"
 output="screen"
 />
+
+<test test-name="talker_test" pkg="beginner_tutorials" type="talker_test" />
 </launch>

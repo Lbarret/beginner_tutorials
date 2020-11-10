@@ -15,6 +15,8 @@ find_package(catkin REQUIRED COMPONENTS
   tf
 )
 
+
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -197,10 +199,15 @@ include_directories(
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_beginner_tutorials.cpp)
+# catkin_add_gtest(utest test/utest.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest_gtest(talker_test launch/conversation.launch test/utest.cpp)
+  target_link_libraries(talker_test ${catkin_LIBRARIES})
+endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
