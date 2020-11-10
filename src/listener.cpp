@@ -1,8 +1,9 @@
 /**
  * @file listener.cpp
- * @version 2.0
+ * @version 3.0
  * @brief Ros client node that requests the service chat_service 
- * @Created on: Oct 31, 2020
+ * and subscribes to the chatter topic
+ * @Created on: Nov 8, 2020
  * @copyright 2020 
  * @Author Loic Barret
  */
@@ -12,9 +13,14 @@
 #include "beginner_tutorials/chat_service.h"
 
 /**
- * This program demonstrates the functionality of services over the ROS system.
+ * This program demonstrates the functionality of services and subscribers over the ROS system.
  */
 
+/**
+* @brief reads what is coming in the chatter topic
+* @param &msg the message being transcribed on the chatter topic
+* @return void
+*/
 void chatterCallback(const std_msgs::String::ConstPtr& msg) {
   ROS_INFO_STREAM("I heard: " << msg->data.c_str());
 }
@@ -50,10 +56,25 @@ int main(int argc, char **argv) {
   std::cout << "?\n\n...Really? That's all you have to say? \n\nWhatever. \n\n";
   while (ros::ok()) {
 
+    /**
+     * The subscribe() call is how you tell ROS that you want to receive messages
+     * on a given topic.  This invokes a call to the ROS
+     * master node, which keeps a registry of who is publishing and who
+     * is subscribing.  Messages are passed to a callback function, here
+     * called chatterCallback.  subscribe() returns a Subscriber object that you
+     * must hold on to until you want to unsubscribe.  When all copies of the Subscriber
+     * object go out of scope, this callback will automatically be unsubscribed from
+     * this topic.
+     *
+     * The second parameter to the subscribe() function is the size of the message
+     * queue.  If messages are arriving faster than they are being processed, this
+     * is the number of messages that will be buffered up before beginning to throw
+     * away the oldest ones.
+     */
     ros::Subscriber sub = nh.subscribe("chatter", 1000, chatterCallback);
     /** 
-   * ServiceClient creates a client of the service chat_service
-   */
+     * ServiceClient creates a client of the service chat_service
+     */
     ros::ServiceClient client =
     nh.serviceClient<beginner_tutorials::chat_service>("conv");
     
