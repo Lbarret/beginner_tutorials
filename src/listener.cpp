@@ -45,17 +45,14 @@ int main(int argc, char **argv) {
    */
   ros::NodeHandle nh;
 
-
   std::string message;
-  
-  /**
+    /**
    * getParam gets the parameter fed in by the user while launching the .launch file
    */
   nh.getParam("message", message);
   std::cout << "\n" << message;
   std::cout << "?\n\n...Really? That's all you have to say? \n\nWhatever. \n\n";
   while (ros::ok()) {
-
     /**
      * The subscribe() call is how you tell ROS that you want to receive messages
      * on a given topic.  This invokes a call to the ROS
@@ -77,7 +74,6 @@ int main(int argc, char **argv) {
      */
     ros::ServiceClient client =
     nh.serviceClient<beginner_tutorials::chat_service>("conv");
-    
     /**
      * srv is a service object that contains the attributes in chat_service.srv. The user 
      * populates the request message with their answer to the question

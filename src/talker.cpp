@@ -7,11 +7,11 @@
  * @Author Loic Barret
  */
 
+#include <tf/transform_broadcaster.h>
 #include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "beginner_tutorials/chat_service.h"
-#include <tf/transform_broadcaster.h>
 
 /**
  * This program demonstrates the functionality of publisher/subscribers, services, and tf frames over the ROS system.
@@ -90,7 +90,7 @@ int main(int argc, char **argv) {
    * a unique string for each message.
    */  
   int count = 0;
-  while (ros::ok()){
+  while (ros::ok()) {
     /**
      * ServiceServer creates a server of the service chat_service
      */
@@ -104,8 +104,6 @@ int main(int argc, char **argv) {
     std::stringstream ss;
     ss << "robots > humans " << count;
     msg.data = ss.str();
-
-    //ROS_INFO_STREAM(msg.data.c_str());
 
     /**
      * The publish() function is how you send messages. The parameter
@@ -125,11 +123,10 @@ int main(int argc, char **argv) {
      * set the origin and roation of the transform matrix. Apply that transform
      * to a child frame "talk" with "world" parent frame 
      */    
-    transform.setOrigin( tf::Vector3(0.0, 2.0, 0.0) );
-    transform.setRotation( tf::Quaternion(0, 0, 0, 1) );
-    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(), "world", "talk"));
-  
-    
+    transform.setOrigin(tf::Vector3(0.0, 2.0, 0.0));
+    transform.setRotation(tf::Quaternion(0, 0, 0, 1));
+    br.sendTransform(tf::StampedTransform(transform, ros::Time::now(),
+     "world", "talk"));
 
     /**
      * While the service hasn't been called, inform the user that the node is waiting

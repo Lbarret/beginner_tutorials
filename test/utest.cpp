@@ -8,14 +8,13 @@
  */
 
 #include <ros/ros.h>
-#include "beginner_tutorials/chat_service.h"
 #include <gtest/gtest.h>
+#include "beginner_tutorials/chat_service.h"
 
 /**
  * Declare a test
  */
-TEST(TestSuite, testCase1)
-{
+TEST(TestSuite, testCase1) {
   ros::NodeHandle nh;
   ros::ServiceClient client =
     nh.serviceClient<beginner_tutorials::chat_service>("conv");
@@ -37,7 +36,7 @@ TEST(TestSuite, testCase1)
 /**
  * Run all the tests that were declared with TEST()
  */
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
   testing::InitGoogleTest(&argc, argv);
   ros::init(argc, argv, "tester");
   ros::NodeHandle nh;

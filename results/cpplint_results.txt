@@ -1,8 +1,10 @@
 lbarret@MatebookLB:~/catkin_ws/src/beginner_tutorials$ cpplint $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )
 Done processing ./src/listener.cpp
-./src/talker.cpp:24:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::chat_service::Request &req  [runtime/references] [2]
-./src/talker.cpp:25:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::chat_service::Response &res  [runtime/references] [2]
+./src/talker.cpp:26:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::chat_service::Request &req  [runtime/references] [2]
+./src/talker.cpp:27:  Is this a non-const reference? If so, make const or use a pointer: beginner_tutorials::chat_service::Response &res  [runtime/references] [2]
 Done processing ./src/talker.cpp
+Done processing ./test/utest.cpp
 Total errors found: 2
+
 
 These errors look to be a conflict between the ROS API and the style guide.
