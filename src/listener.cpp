@@ -80,7 +80,6 @@ int main(int argc, char **argv) {
       }
     } else {
       ROS_ERROR_STREAM("Failed to call service chat_service");
-      return 1;
     }
 
     /**
